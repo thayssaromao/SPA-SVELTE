@@ -1,7 +1,6 @@
 <script lang="ts">
-    import Tag from "./Tag.svelte";
-
-    export let ingredientes: string[];
+    import { minhaLista } from "$lib/stores/minhaLista";
+    import Tag from "../compartilhados/Tag.svelte";
 
 </script>
 
@@ -9,7 +8,7 @@
     <h2>Sua Lista:</h2>
 
     <ul class="meus-ingredientes">
-        {#each ingredientes as item(item)}
+        {#each $minhaLista as item(item)}
             <li>
                 <Tag ativa={true}>{item}</Tag>
             </li>

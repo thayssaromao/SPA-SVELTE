@@ -2,46 +2,26 @@
     <title>SPA Cook</title>
 </svelte:head>
 <script lang="ts">
-    import Cabecalho from "$lib/components/Cabecalho.svelte";
-    import MinhaLista from "$lib/components/MinhaLista.svelte";
-    import Titulo from "$lib/components/Titulo.svelte"
-    import Tag from "$lib/components/Tag.svelte"
-    import Categoria from "$lib/components/Categoria.svelte"
+    import Titulo from "$lib/components/compartilhados/Titulo.svelte"
+    import Tag from "$lib/components/compartilhados/Tag.svelte"
+    import Categoria from "$lib/components/paginas/Categoria.svelte"
 
     import categorias from "$lib/json/categorias.json"
-    import Rodape from "$lib/components/Rodape.svelte";
 
-    let minhaLista: string[] = [];
+    import {beforeNavigate} from "$app/navigation"
+    import { minhaLista } from "$lib/stores/minhaLista";
 
-    function adicionarIngrediente(e:CustomEvent<string>){
-        const ingrediente = e.detail
-        minhaLista = [...minhaLista, ingrediente]
 
-    }
-    function remover(e:CustomEvent<string>){
-        const ingrediente = e.detail
-        minhaLista = minhaLista.filter(
-            (item) => item !== ingrediente
-        )
-    }
+    beforeNavigate((navigation) => {
+        if($minhaLista.length === 0 ){
+            navigation.cancel()
+        }
+    })
 
 </script>
 
 <!-- <a href="/receitas">Ir para Receitas</a> -->
 <!-- carrega uma pagina nova sem fazer uma requisiçao ao servidor -->
-
-<div class="container-principal">
-    <Cabecalho />
-
-    <div class="estilo-principal">
-        {#if minhaLista.length}
-            <div class="minha-lista-container">
-            
-                <MinhaLista  ingredientes={minhaLista}/>
-
-                <div class="divisoria"></div>
-            </div>
-        {/if}
 
         <main>
             <div class="info">
@@ -55,8 +35,6 @@
                     <li>
                         <Categoria 
                         {categoria}
-                        on:adicionarIngrediente={adicionarIngrediente}
-                        on:remover={remover}
                         />
                     </li>
                 {/each}
@@ -68,33 +46,9 @@
                 </a>
             </div>
         </main>
-    </div>
-    <Rodape />
-</div>
+
 
 <style>
-    .container-principal {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-    }
-
-    .estilo-principal {
-        text-align: center;
-        padding: 0 5vw 3.375rem;
-        flex: 1;
-    }
-
-    .minha-lista-container {
-        margin-bottom: 2rem;
-    }
-
-    .divisoria {
-        width: 40vw;
-        height: 2px;
-        background-color: var(--verde);
-        margin: 0 auto;
-    }
 
     .info {
         margin-bottom: 3.375rem;

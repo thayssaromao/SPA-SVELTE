@@ -1,5 +1,11 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.png';
+    import Rodape from "$lib/components/layout/Rodape.svelte";
+    import Cabecalho from "$lib/components/layout/Cabecalho.svelte";
+    import MinhaLista from "$lib/components/layout/MinhaLista.svelte";
+
+    import { minhaLista } from "$lib/stores/minhaLista";
+
 
 	let { children } = $props();
 	import "../app.css"
@@ -9,4 +15,48 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
-{@render children?.()}
+
+<div class="container-principal">
+    <Cabecalho />
+	<div class="estilo-principal">
+
+        {#if $minhaLista.length}
+        <div class="minha-lista-container">
+        
+            <MinhaLista />
+
+            <div class="divisoria"></div>
+        </div>
+    {/if}
+		<slot></slot>
+	</div>
+	<Rodape />
+</div>
+
+
+<style>
+    .minha-lista-container {
+        margin-bottom: 2rem;
+    }
+
+    .divisoria {
+        width: 40vw;
+        height: 2px;
+        background-color: var(--verde);
+        margin: 0 auto;
+    }
+    
+	.container-principal {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .estilo-principal {
+        text-align: center;
+        padding: 0 5vw 3.375rem;
+        flex: 1;
+    }
+
+</style>
+
